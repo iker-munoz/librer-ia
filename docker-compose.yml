@@ -1,0 +1,28 @@
+name: libreria
+services:
+
+  database:
+    image: surrealdb/surrealdb
+    container_name: libreria-database
+    user: root
+    command:
+      - start
+      - --user
+      - root
+      - --pass
+      - root
+      - rocksdb:/data/libreria.db
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./volumes/database:/data
+    restart: always
+
+  inference:
+    image: ollama/ollama
+    container_name: libreria-inference
+    ports:
+      - "8002:11434"
+    volumes:
+      - ./volumes/inference:/root/.ollama
+    restart: always
