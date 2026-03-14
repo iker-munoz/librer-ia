@@ -53,6 +53,7 @@
         height: calc(100% - 20px);
         margin: 10px;
         padding: 50px;
+        box-sizing: border-box;
         border: 1px solid #202020;
         border-radius: 10px;
         display: flex;
