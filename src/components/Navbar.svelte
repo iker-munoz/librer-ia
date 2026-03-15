@@ -1,17 +1,11 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-
     import { faFileInvoice, faList, faPlus, faUser } from "@fortawesome/free-solid-svg-icons";
 
     import NavigationButton from "./NavigationButton.svelte";
 
-    import { app_state } from "../lib/state/app.svelte";
-    import CollapsibleArea from "./CollapsibleArea.svelte";
+    import { conversations_state } from "$lib/state/conversations.svelte"
 
-    onMount(() => {
-        app_state.updateConversations()
-        console.log(app_state.getRecentConversations())
-    })
+    import CollapsibleArea from "./CollapsibleArea.svelte";
 </script>
 
 <div class="navbar">
@@ -24,23 +18,34 @@
         <NavigationButton label="Users" icon={faUser}/>
     </div>
     <hr>
-    <div class="quick_access">
-        <CollapsibleArea label="Favorites">
-            {#each app_state.getFavoriteConversations() as conversation }
+    <div class="quick-access">
+        <CollapsibleArea 
+            label="Favorites" 
+            children_count={conversations_state.favorite_conversations.length}
+            empty_information="Your favorite conversations will appear here"
+        >
+            {#each conversations_state.favorite_conversations as conversation }
                 <p>{conversation.id}</p>
             {/each}
         </CollapsibleArea>
-        <CollapsibleArea label="Recents">
-            {#each app_state.getRecentConversations() as conversation }
+        <CollapsibleArea
+            label="Recents" 
+            children_count={conversations_state.recent_conversations.length}
+            empty_information="Your recent conversations will appear here"
+        >
+            {#each conversations_state.recent_conversations as conversation }
                 <p>{conversation.id}</p>
             {/each} 
         </CollapsibleArea>
     </div>
+    <hr>
+    
 </div>
 
 <style>
     .navbar {
         width: 400px;
+        min-width: 400px;
         height: 100%;
         padding: 20px;
         box-sizing: border-box;
@@ -57,8 +62,9 @@
         gap: 5px;
     }
 
-    .quick_access {
+    .quick-access {
         width: 100%;
+        flex-grow: 1;
         max-height: calc(100vh - 426px);
         padding: 0px 10px;
         flex-shrink: 0;
