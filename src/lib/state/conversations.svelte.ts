@@ -13,7 +13,7 @@ class ConversationsState {
         this.conversations = [ 
             {
                 id: "0000",
-                title: "This is a test conversation",
+                title: "This is a test conversation with a really, really, really long title",
                 is_favorite: false,
                 creation_timestamp: 0,
                 last_message_timestamp: 0,

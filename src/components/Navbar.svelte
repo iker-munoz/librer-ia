@@ -6,6 +6,7 @@
     import { conversations_state } from "$lib/state/conversations.svelte"
 
     import CollapsibleArea from "./CollapsibleArea.svelte";
+    import ConversationQuickRedirectButton from "./ConversationQuickRedirectButton.svelte";
 </script>
 
 <div class="navbar">
@@ -25,7 +26,7 @@
             empty_information="Your favorite conversations will appear here"
         >
             {#each conversations_state.favorite_conversations as conversation }
-                <p>{conversation.id}</p>
+                <ConversationQuickRedirectButton {conversation}/>
             {/each}
         </CollapsibleArea>
         <CollapsibleArea
@@ -34,7 +35,7 @@
             empty_information="Your recent conversations will appear here"
         >
             {#each conversations_state.recent_conversations as conversation }
-                <p>{conversation.id}</p>
+                <ConversationQuickRedirectButton {conversation}/>
             {/each} 
         </CollapsibleArea>
     </div>

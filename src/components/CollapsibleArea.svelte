@@ -88,4 +88,12 @@
             text-align: center;
         }
     }
+
+    .elements {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
 </style>
