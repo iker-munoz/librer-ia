@@ -1,6 +1,6 @@
 export enum Role {
-    USER,
-    ASSISTANT,
-    TOOL,
-    SYSTEM
+    USER = "user",
+    ASSISTANT = "assistant",
+    TOOL = "tool",
+    SYSTEM = "system"
 }
