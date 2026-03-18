@@ -27,6 +27,7 @@ const create_users_table = async function() {
         DEFINE FIELD IF NOT EXISTS username ON TABLE user TYPE string;
         DEFINE FIELD IF NOT EXISTS password_hash ON TABLE user TYPE string;
         DEFINE FIELD IF NOT EXISTS permissions ON TABLE user TYPE string;
+        DEFINE FIELD IF NOT EXISTS profile_picture ON TABLE user TYPE option<string>;
     `)
 
     await DB.query(
@@ -37,7 +38,8 @@ const create_users_table = async function() {
                     id: $admin_id,
                     username: "Admin",
                     password_hash: $admin_password_hash,
-                    permissions: "root"
+                    permissions: "root",
+                    profile_picture: NONE
                 }
             }
         `,
