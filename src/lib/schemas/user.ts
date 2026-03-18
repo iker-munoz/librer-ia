@@ -1,7 +1,8 @@
 import type { Permission } from "$lib/enums/permission"
+import type { RecordId } from "surrealdb"
 
 export type User = {
-    id: string,
+    id: RecordId,
     username: string,
     password_hash: string,
     permissions: Permission,

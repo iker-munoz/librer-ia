@@ -1,7 +1,8 @@
+import type { RecordId } from "surrealdb"
 import type { Message } from "./message"
 
 export type Conversation = {
-    id: string,
+    id: RecordId,
     title: string,
     is_favorite: boolean,
     creation_timestamp: number,
