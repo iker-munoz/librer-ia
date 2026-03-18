@@ -3,6 +3,8 @@ import type { Role } from "../enums/role"
 
 export type Message = {
     id: RecordId,
+    uuid: string,
     role: Role,
+    content: string,
     creation_timestamp: number
 }
