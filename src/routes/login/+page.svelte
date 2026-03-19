@@ -1,9 +1,9 @@
 <script lang="ts">
     import type { PageProps } from "./$types";
 
-    import TextInput from "../../../components/inputs/TextInput.svelte";
-    import PasswordInput from "../../../components/inputs/PasswordInput.svelte";
-    import PrimaryButton from "../../../components/inputs/PrimaryButton.svelte";
+    import TextInput from "../../components/inputs/TextInput.svelte";
+    import PasswordInput from "../../components/inputs/PasswordInput.svelte";
+    import PrimaryButton from "../../components/inputs/PrimaryButton.svelte";
 
     let { form }: PageProps = $props();
 </script>

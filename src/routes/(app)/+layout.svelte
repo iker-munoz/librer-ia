@@ -1,14 +1,16 @@
 <script lang="ts">
+    import type { Snippet } from 'svelte';
+    import type { LayoutProps } from './$types';
+
     import Navbar from '../../components/layout/Navbar.svelte';
 
-	let { children } = $props();
+    let { data, children }: LayoutProps = $props();
 </script>
 
 <svelte:head>
     <title>LibrerIA</title>
 </svelte:head>
-
-<Navbar/>
+<Navbar current_user={data.current_user}/>
 <div class="content-wrapper">
     <div class="content">
         {@render children()}

@@ -6,6 +6,5 @@ export type User = {
     uuid: string,
     username: string,
     password_hash: string,
-    permissions: Permission,
-    profile_picture?: string
+    permissions: Permission
 }   

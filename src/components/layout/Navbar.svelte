@@ -1,10 +1,14 @@
 <script lang="ts">
     import { faFileInvoice, faList, faPlus, faUser } from "@fortawesome/free-solid-svg-icons";
 
-    import NavigationButton from "./NavigationButton.svelte";
+    import type { User } from "$lib/schemas/user";
 
+    import NavigationButton from "./NavigationButton.svelte";
     import CollapsibleArea from "./CollapsibleArea.svelte";
     import ConversationQuickRedirectButton from "./ConversationQuickRedirectButton.svelte";
+    import UserCard from "./UserCard.svelte";
+
+    let { current_user }: { current_user: User } = $props();
 </script>
 
 <div class="navbar">
@@ -32,7 +36,7 @@
         </CollapsibleArea>
     </div>
     <hr>
-    
+    <UserCard {current_user}/>
 </div>
 
 <style>

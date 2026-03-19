@@ -1,5 +1,5 @@
 export enum Permission {
-    ROOT = "root",
-    ADMIN = "admin",
-    USER = "user"
+    ROOT = "Root",
+    ADMIN = "Admin",
+    USER = "User"
 }

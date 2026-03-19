@@ -1,7 +1,10 @@
 import { Surreal } from "surrealdb";
 import { v4 as Uuid } from "uuid";
+
 import pkg from "js-sha3"
 const { sha3_256 } = pkg;
+
+import { Permission } from "$lib/enums/permission";
 
 export const DB: Surreal = new Surreal();
 await DB.connect("ws://localhost:8001", {
@@ -28,25 +31,24 @@ const create_users_table = async function() {
         DEFINE FIELD IF NOT EXISTS username ON TABLE user TYPE string;
         DEFINE FIELD IF NOT EXISTS password_hash ON TABLE user TYPE string;
         DEFINE FIELD IF NOT EXISTS permissions ON TABLE user TYPE string;
-        DEFINE FIELD IF NOT EXISTS profile_picture ON TABLE user TYPE option<string>;
     `)
 
     await DB.query(
         `
-            $roots = SELECT * FROM user WHERE permissions = "root" LIMIT 1;
+            $roots = SELECT * FROM user WHERE permissions = "Root" LIMIT 1;
             IF array::len($roots) == 0 {
                 CREATE user CONTENT {
                     uuid: $admin_uuid,
-                    username: "Admin",
+                    username: "Root",
                     password_hash: $admin_password_hash,
-                    permissions: "root",
-                    profile_picture: NONE
+                    permissions: $admin_permissions,
                 }
             }
         `,
         {
             admin_uuid: Uuid(),
-            admin_password_hash: sha3_256("librer-ia")
+            admin_password_hash: sha3_256("librer-ia"),
+            admin_permissions: Permission.ROOT
         }
     )
 }

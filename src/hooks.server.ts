@@ -1,7 +1,7 @@
 import type { Handle } from "@sveltejs/kit";
 import { building } from "$app/environment";
 
-import { database_setup } from "$lib/server/database";
+import { database_setup } from "$lib/server/database/setup";
 import type { User } from "$lib/schemas/user";
 
 if (!building) {
