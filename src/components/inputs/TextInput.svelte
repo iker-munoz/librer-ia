@@ -3,7 +3,7 @@
     import type { IconDefinition } from "@fortawesome/free-solid-svg-icons";
     
     let {
-        value,
+        value = $bindable(),
         placeholder,
         icon,
         error
@@ -17,7 +17,7 @@
 </script>
 
 <div class="input-wrapper">
-    <input class="input {icon? 'has-icon': ''} {error? 'has-error': ''}" bind:value={value} {placeholder}>
+    <input name={placeholder.toLowerCase()} class="input {icon? 'has-icon': ''} {error? 'has-error': ''}" bind:value={value} {placeholder}>
     {#if icon}
         <div class="icon-wrapper">
             <Fa {icon}/>

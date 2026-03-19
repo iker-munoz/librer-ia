@@ -1,6 +1,6 @@
 import { redirect } from "@sveltejs/kit";
-import { users_state } from "$lib/state/users.svelte";
+import type { LayoutServerLoad } from "./$types";
 
-export function load () {
-    if (!users_state.current_user) redirect(307, "/login")
+export const load: LayoutServerLoad = async ({ locals }) => {
+    if (!locals.user) redirect(307, "/login")
 }

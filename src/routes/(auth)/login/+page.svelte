@@ -1,22 +1,28 @@
 <script lang="ts">
+    import type { PageProps } from "./$types";
+
     import TextInput from "../../../components/inputs/TextInput.svelte";
     import PasswordInput from "../../../components/inputs/PasswordInput.svelte";
+    import PrimaryButton from "../../../components/inputs/PrimaryButton.svelte";
 
-    let username: string = $state("");
-    let username_error: string = $state("");
-    let password: string = $state("");
-    let password_error: string = $state("");
+    let { form }: PageProps = $props();
 </script>
-<div class="form-wrapper">
+<form class="form-wrapper" method="POST" action="?/login">
     <div class="section">
         <h1>Log into LibrerIA</h1>
         <p>Your local and fully private AI assistant</p>
     </div>
     <div class="section">
-        <TextInput value={username} placeholder="Username" error={username_error}/>
-        <PasswordInput value={password} placeholder="Password" error={password_error}/>
+        <TextInput value={form?.username ?? ''} placeholder="Username" error={form?.username_error}/>
+        <PasswordInput value="" placeholder="Password" error={form?.password_error}/>
     </div>
-</div>
+    <div class="section">
+        <PrimaryButton label="Log in" call={() => {}}/>
+        {#if form?.validation_error}
+            <p class="error-message">{form?.validation_error}</p>
+        {/if}
+    </div>
+</form>
 
 <style>
     :global(html, body) {
@@ -60,6 +66,13 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+
+            .error-message {
+                width: 100%;
+                text-align: center;
+                font-size: 14px;
+                color: #FF8080;
+            }
         }
     }
 </style>

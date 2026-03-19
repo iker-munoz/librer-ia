@@ -1,9 +1,9 @@
 <script lang="ts">
+    import Fa from "svelte-fa";
     import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import Fa from "svelte-fa";
     
     let {
-        value,
+        value = $bindable(),
         placeholder,
         error
     }: {
@@ -17,8 +17,8 @@ import Fa from "svelte-fa";
 </script>
 
 <div class="input-wrapper">
-    <input type={is_shown? 'text': 'password'} class="input {error? 'has-error': ''}" bind:value={value} {placeholder}>
-    <button class="icon-wrapper" onclick={() => { is_shown = !is_shown }}>
+    <input name={placeholder.toLowerCase()} type={is_shown? 'text': 'password'} class="input {error? 'has-error': ''}" bind:value={value} {placeholder}>
+    <button type="button" class="icon-wrapper" onclick={() => { is_shown = !is_shown }}>
         <Fa icon={is_shown? faEyeSlash: faEye}/>
     </button>
     {#if error}

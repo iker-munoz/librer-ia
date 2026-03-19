@@ -3,8 +3,6 @@
 
     import NavigationButton from "./NavigationButton.svelte";
 
-    import { conversations_state } from "$lib/state/conversations.svelte"
-
     import CollapsibleArea from "./CollapsibleArea.svelte";
     import ConversationQuickRedirectButton from "./ConversationQuickRedirectButton.svelte";
 </script>
@@ -22,21 +20,15 @@
     <div class="quick-access">
         <CollapsibleArea 
             label="Favorites" 
-            children_count={conversations_state.favorite_conversations.length}
-            empty_information="Your favorite conversations will appear here"
-        >
-            {#each conversations_state.favorite_conversations as conversation }
-                <ConversationQuickRedirectButton {conversation}/>
-            {/each}
+            children_count={1}
+            empty_information="Your favorite conversations will appear here">
+            p
         </CollapsibleArea>
         <CollapsibleArea
             label="Recents" 
-            children_count={conversations_state.recent_conversations.length}
-            empty_information="Your recent conversations will appear here"
-        >
-            {#each conversations_state.recent_conversations as conversation }
-                <ConversationQuickRedirectButton {conversation}/>
-            {/each} 
+            children_count={1}
+            empty_information="Your recent conversations will appear here">
+            p
         </CollapsibleArea>
     </div>
     <hr>

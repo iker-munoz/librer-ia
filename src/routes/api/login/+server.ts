@@ -9,17 +9,7 @@ export async function POST({ request }: { request: Request }) {
          password_hash
      } = await request.json();
 
-    const [_, user] = await DB.query<[null, User]>(
-        `
-            $users = SELECT * FROM user WHERE username = $username AND password_hash = $password_hash;
-            RETURN $users[0];
-        `,
-        {
-            username,
-            password_hash
-        }
-    )
 
-    if (!user) return json ({}, { status: 404 })
+    if (!user) return json ({}, { status: 400 })
     return json(user, { status: 200 })
 }
