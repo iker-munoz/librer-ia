@@ -1,6 +1,7 @@
-import { Surreal, Table } from "surrealdb";
+import { Surreal } from "surrealdb";
 import { v4 as Uuid } from "uuid";
-import argon2 from "argon2";
+import pkg from "js-sha3"
+const { sha3_256 } = pkg;
 
 export const DB: Surreal = new Surreal();
 await DB.connect("ws://localhost:8001", {
@@ -45,7 +46,7 @@ const create_users_table = async function() {
         `,
         {
             admin_uuid: Uuid(),
-            admin_password_hash: await argon2.hash("librer-ia")
+            admin_password_hash: sha3_256("librer-ia")
         }
     )
 }

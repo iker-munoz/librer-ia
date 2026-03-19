@@ -1,9 +1,6 @@
-import { redirect, type Cookies } from "@sveltejs/kit";
+import { redirect } from "@sveltejs/kit";
+import { users_state } from "$lib/state/users.svelte";
 
-export function load ({ cookies }: { cookies: Cookies }) {
-    const current_user = cookies.get("current_user");
-
-    if (current_user) {
-        redirect(307, "/current_user")
-    }
+export function load () {
+    if (users_state.current_user) redirect(307, "/new_conversation")
 }

@@ -22,7 +22,7 @@
 	},
 	"dependencies": {
 		"@fortawesome/free-solid-svg-icons": "^7.2.0",
-		"argon2": "^0.44.0",
+		"js-sha3": "^0.9.3",
 		"surrealdb": "^2.0.2",
 		"svelte-fa": "^4.0.4",
 		"uuid": "^13.0.0"

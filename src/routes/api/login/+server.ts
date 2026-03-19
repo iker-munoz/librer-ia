@@ -20,6 +20,6 @@ export async function POST({ request }: { request: Request }) {
         }
     )
 
-    if (!user) return json ({ message: "Invalid credentials" }, { status: 404 })
+    if (!user) return json ({}, { status: 404 })
     return json(user, { status: 200 })
 }
