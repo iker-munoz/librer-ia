@@ -38,8 +38,8 @@ const create_users_table = async function() {
 
     await DB.query(
         `
-            $roots = SELECT * FROM user WHERE permissions = "Root" LIMIT 1;
-            IF array::len($roots) == 0 {
+            $root_user = ( SELECT * FROM user WHERE permissions = "Root" LIMIT 1 )[0];
+            IF !$root_user {
                 CREATE user CONTENT {
                     uuid: $admin_uuid,
                     username: "Root",
