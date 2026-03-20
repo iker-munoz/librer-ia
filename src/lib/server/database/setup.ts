@@ -22,9 +22,12 @@ export const database_setup = async function() {
     await create_users_table();
     await create_conversations_table();
     await create_message_table();
+
+    console.log("Database setup completed!")
 }
 
 const create_users_table = async function() {
+    console.log("Creating users table...")
     await DB.query(`
         DEFINE TABLE IF NOT EXISTS user SCHEMAFULL;
         DEFINE FIELD IF NOT EXISTS uuid ON TABLE user TYPE string;
@@ -54,6 +57,7 @@ const create_users_table = async function() {
 }
 
 const create_conversations_table = async function() {
+    console.log("Creating conversations table...")
     await DB.query(`
         DEFINE TABLE IF NOT EXISTS conversation SCHEMAFULL;
         DEFINE FIELD IF NOT EXISTS uuid ON TABLE conversation TYPE string;
@@ -64,11 +68,13 @@ const create_conversations_table = async function() {
 }
 
 const create_message_table = async function() {
+    console.log("Creating messages table...")
     await DB.query(`
         DEFINE TABLE IF NOT EXISTS message SCHEMAFULL;
         DEFINE FIELD IF NOT EXISTS uuid ON TABLE message TYPE string;
         DEFINE FIELD IF NOT EXISTS role ON TABLE message TYPE string;
         DEFINE FIELD IF NOT EXISTS content ON TABLE message TYPE string;
         DEFINE FIELD IF NOT EXISTS creation_timestamp ON TABLE message TYPE number;
+        DEFINE FIELD IF NOT EXISTS generation_speed ON TABLE message TYPE number;
     `)
 }

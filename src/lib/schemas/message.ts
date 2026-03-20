@@ -7,4 +7,5 @@ export type Message = {
     role: Role,
     content: string,
     creation_timestamp: number
+    genreation_speed: number
 }
