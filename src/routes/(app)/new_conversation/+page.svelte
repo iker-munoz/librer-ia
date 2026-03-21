@@ -1,7 +1,5 @@
 <script lang="ts">
     import MessageForm from "../../../components/inputs/MessageForm.svelte";
-
-
 </script>
 
 <div class="header-wrapper">

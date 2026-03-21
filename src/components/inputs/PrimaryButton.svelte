@@ -5,15 +5,17 @@
     let {
         label,
         icon,
+        disabled,
         call
     }: {
         label?: string,
-        icon?: IconDefinition
+        icon?: IconDefinition,
+        disabled?: boolean,
         call: () => void
     } = $props();
 </script>
 
-<button class="btn {label? '': 'no-label'}" onclick={call}>
+<button class="btn {label? '': 'no-label'}" onclick={call} {disabled}>
     <p class="label">{label}</p>
     {#if icon}
         <div class="icon-wrapper">
@@ -43,4 +45,14 @@
     }
     .btn.no-label { width: 40px; }
     .btn:hover { background-color: #E0E0E0; }
+    .btn:disabled {
+        background-color: transparent;
+        box-sizing: border-box;
+        border: 1px solid #505050;
+        cursor: not-allowed;
+
+        .icon-wrapper {
+            color: #505050;
+        }
+    }
 </style>

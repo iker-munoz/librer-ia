@@ -2,10 +2,10 @@ import type { RecordId } from "surrealdb"
 import type { Role } from "../enums/role"
 
 export type Message = {
-    id: RecordId,
+    id?: RecordId,
     uuid: string,
     role: Role,
     content: string,
     creation_timestamp: number
-    genreation_speed: number
+    generation_speed: number
 }
