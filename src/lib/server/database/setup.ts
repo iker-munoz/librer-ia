@@ -64,6 +64,7 @@ const create_conversations_table = async function() {
         DEFINE FIELD IF NOT EXISTS title ON TABLE conversation TYPE string;
         DEFINE FIELD IF NOT EXISTS creation_timestamp ON TABLE conversation TYPE number;
         DEFINE FIELD IF NOT EXISTS last_message_timestamp ON TABLE conversation TYPE number;
+        DEFINE FIELD IF NOT EXISTS is_favorite ON TABLE conversation TYPE bool;
     `)
 }
 

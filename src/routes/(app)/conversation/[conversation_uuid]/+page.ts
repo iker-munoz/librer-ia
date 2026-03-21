@@ -1,5 +1,5 @@
 import type { PageLoad } from "./$types";
 
 export const load: PageLoad = ({params}) => {
-    return { conversation_id: params.conversation_id }
+    return { conversation_uuid: params.conversation_uuid }
 }

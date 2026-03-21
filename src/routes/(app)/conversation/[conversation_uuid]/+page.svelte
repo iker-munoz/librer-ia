@@ -4,4 +4,4 @@
     let { data }: PageProps = $props();
 </script>
 
-<p>Conversation with id: {data.conversation_id}</p>
+<p>Conversation with uuid: {data.conversation_uuid}</p>

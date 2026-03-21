@@ -1,5 +1,4 @@
 <script lang="ts">
-    import type { Snippet } from 'svelte';
     import type { LayoutProps } from './$types';
 
     import Navbar from '../../components/layout/Navbar.svelte';
@@ -10,7 +9,7 @@
 <svelte:head>
     <title>LibrerIA</title>
 </svelte:head>
-<Navbar current_user={data.current_user}/>
+<Navbar current_user={data.current_user} user_conversations_string={data.user_conversations_string}/>
 <div class="content-wrapper">
     <div class="content">
         {@render children()}
@@ -59,8 +58,15 @@
         border: 1px solid #202020;
         border-radius: 10px;
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
+        justify-content: center;
+
+        .content {
+            flex-grow: 1;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
     }
 </style>

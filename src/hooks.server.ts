@@ -24,5 +24,6 @@ export const handle: Handle = async ({ event, resolve }) => {
         event.locals.user = current_user;
     }
 
+
     return resolve(event);
 }

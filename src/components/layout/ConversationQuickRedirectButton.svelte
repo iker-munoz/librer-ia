@@ -4,14 +4,10 @@
 
     import type { Conversation } from "$lib/schemas/conversation";
 
-    let {
-        conversation
-    }: {
-        conversation: Conversation
-    } = $props();
+    let { conversation }: { conversation: Conversation } = $props();
 
     const getLink = function(): string {
-        return `/conversation/${conversation.id}`
+        return `/conversation/${conversation.uuid}`
     }
 
     const isCurrent = function(): boolean {
