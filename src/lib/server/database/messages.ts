@@ -7,10 +7,10 @@ import { DB } from "./setup";
 export const save_message = async function(user: User, conversation: Conversation, message: Message) {
     await DB.query(
         `
-            $user = ( SELECT * FROM user WHERE uuid = $user_uuid )[0];
-            $user_conversations = ( SELECT -> has -> conversation.* AS conversations FROM $user )[0].conversations;
-            $conversation = ( SELECT * FROM $user_conversations WHERE uuid == $conversation_uuid )[0];
-            $message = ( CREATE message SET
+            LET $user = ( SELECT * FROM user WHERE uuid = $user_uuid )[0];
+            LET $user_conversations = ( SELECT -> has -> conversation.* AS conversations FROM $user )[0].conversations;
+            LET $conversation = ( SELECT * FROM $user_conversations WHERE uuid == $conversation_uuid )[0];
+            LET $message = ( CREATE message SET
                 uuid = $message_uuid,
                 role = $message_role,
                 content = $message_content,

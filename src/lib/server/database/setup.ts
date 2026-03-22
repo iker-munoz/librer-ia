@@ -38,7 +38,7 @@ const create_users_table = async function() {
 
     await DB.query(
         `
-            $root_user = ( SELECT * FROM user WHERE permissions = "Root" LIMIT 1 )[0];
+            LET $root_user = ( SELECT * FROM user WHERE permissions = "Root" LIMIT 1 )[0];
             IF !$root_user {
                 CREATE user CONTENT {
                     uuid: $admin_uuid,

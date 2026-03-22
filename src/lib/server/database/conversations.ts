@@ -5,8 +5,8 @@ import { DB } from "./setup";
 export const save_conversation = async function(user: User, conversation: Conversation) {
     await DB.query(
         `
-            $user = ( SELECT * FROM user WHERE uuid = $user_uuid )[0];
-            $conversation = ( CREATE conversation SET
+            LET $user = ( SELECT * FROM user WHERE uuid = $user_uuid )[0];
+            LET $conversation = ( CREATE conversation SET
                 uuid = $conversation_uuid,
                 title = $conversation_title,
                 is_favorite = $conversation_is_favorite,
@@ -28,7 +28,7 @@ export const save_conversation = async function(user: User, conversation: Conver
 export const get_conversations = async function(user: User): Promise<Conversation[]> {
     const [_, conversations] = await DB.query<[undefined, Conversation[]]>(
         `
-            $user = ( SELECT * FROM user WHERE uuid = $user_uuid )[0];
+            LET $user = ( SELECT * FROM user WHERE uuid = $user_uuid )[0];
             ( SELECT -> has -> conversation.* AS conversations FROM $user )[0].conversations;
         `,
         { user_uuid: user.uuid }
