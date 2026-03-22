@@ -5,7 +5,7 @@ import { get_conversations } from "$lib/server/database/conversations";
 
 export const load: LayoutServerLoad = async ({ locals }) => {
     if (!locals.user) redirect(307, "/login");
-    const user_conversations: Conversation[] = await get_conversations(locals.user.uuid);
+    const user_conversations: Conversation[] = await get_conversations(locals.user);
 
     return {
         current_user: locals.user,

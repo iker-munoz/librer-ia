@@ -2,7 +2,7 @@ import type { RecordId } from "surrealdb"
 import type { Message } from "./message"
 
 export type Conversation = {
-    id: RecordId,
+    id?: RecordId,
     uuid: string,
     title: string,
     is_favorite: boolean,
