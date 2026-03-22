@@ -25,6 +25,7 @@ export const inference_setup = async function() {
         create_model(model_template.model, model_template.from);
     })
 
+    await load_model_on_memory("librer-ia")
     console.log("Inference setup completed!")
 }
 
@@ -52,4 +53,8 @@ const cleanup_model = async function(model: string) {
     .catch((err) => {
         throw new Error(`Error connecting to the inference endpoint: ${err}`)
     })
+}
+
+const load_model_on_memory = async function(model: string) {
+    await INFERENCE.chat({ model, keep_alive: -1 })
 }

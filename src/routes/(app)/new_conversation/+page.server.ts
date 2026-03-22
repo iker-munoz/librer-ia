@@ -9,6 +9,7 @@ import type { User } from "$lib/schemas/user";
 
 import { save_conversation } from "$lib/server/database/conversations";
 import { save_message } from "$lib/server/database/messages";
+import { generate_conversation_title } from "$lib/server/inference/generation";
 
 export const actions = {
     default: async ({ request, cookies }: { request: Request, cookies: Cookies }) => {
@@ -20,16 +21,6 @@ export const actions = {
         if (!current_user_cookie_data) redirect(303, "/login");
         const current_user: User = JSON.parse(current_user_cookie_data) as User;
 
-        const new_conversation: Conversation = {
-            uuid: Uuid(),
-            title: "New conversation", // TODO Generate autonomously with the inference model
-            is_favorite: false,
-            creation_timestamp: current_timestamp,
-            last_message_timestamp: current_timestamp,
-            messages: []
-        }
-        await save_conversation(current_user, new_conversation);
-
         const new_message: Message = {
             uuid: Uuid(),
             role: Role.USER,
@@ -37,6 +28,18 @@ export const actions = {
             creation_timestamp: current_timestamp,
             generation_speed: 0
         }
+
+        const new_conversation_title: string = await generate_conversation_title(new_message);
+        const new_conversation: Conversation = {
+            uuid: Uuid(),
+            title: new_conversation_title,
+            is_favorite: false,
+            creation_timestamp: current_timestamp,
+            last_message_timestamp: current_timestamp,
+            messages: []
+        }
+
+        await save_conversation(current_user, new_conversation);
         await save_message(current_user, new_conversation, new_message);
 
         redirect(303, `/conversation/${new_conversation.uuid}`)
