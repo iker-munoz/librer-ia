@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
-    import { faFileInvoice, faList, faPlus, faUser } from "@fortawesome/free-solid-svg-icons";
+    import { faFileInvoice, faList, faUser } from "@fortawesome/free-solid-svg-icons";
 
     import type { Conversation } from "$lib/schemas/conversation";
     import type { User } from "$lib/schemas/user";
@@ -11,26 +11,26 @@
     import CollapsibleArea from "./CollapsibleArea.svelte";
     import ConversationQuickRedirectButton from "./ConversationQuickRedirectButton.svelte";
     import UserCard from "./UserCard.svelte";
+    import PrimaryButton from "../inputs/PrimaryButton.svelte";
+    import { goto } from "$app/navigation";
 
     let {
         current_user,
-        user_conversations_string
+        user_conversations
     }: {
         current_user: User,
-        user_conversations_string: string
+        user_conversations: Conversation[]
     } = $props();
 
-    onMount(() => {
-        const user_conversations: Conversation[] = JSON.parse(user_conversations_string);
-        conversations_state.load_conversations(user_conversations);
-    })
+    onMount(() => { conversations_state.load_conversations(user_conversations); })
 </script>
 
 <div class="navbar">
     <h1>LibrerIA</h1>
     <hr>
+    <PrimaryButton label="New conversation" call={() => {goto('/new_conversation')}}/>
+    <hr>
     <div class="navigation">
-        <NavigationButton label="New conversation" icon={faPlus}/>
         <NavigationButton label="Conversations" icon={faList}/>
         <NavigationButton label="Documents" icon={faFileInvoice}/>
         <NavigationButton label="Users" icon={faUser}/>
@@ -81,7 +81,7 @@
     .quick-access {
         width: 100%;
         flex-grow: 1;
-        max-height: calc(100vh - 426px);
+        max-height: calc(100vh - 462px);
         padding: 0px 10px;
         flex-shrink: 0;
         box-sizing: border-box;

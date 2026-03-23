@@ -2,14 +2,16 @@
     import type { LayoutProps } from './$types';
 
     import Navbar from '../../components/layout/Navbar.svelte';
+    import type { Conversation } from '$lib/schemas/conversation';
 
     let { data, children }: LayoutProps = $props();
+    let user_conversations: Conversation[] = $derived(JSON.parse(data.user_conversations_string));
 </script>
 
 <svelte:head>
     <title>LibrerIA</title>
 </svelte:head>
-<Navbar current_user={data.current_user} user_conversations_string={data.user_conversations_string}/>
+<Navbar current_user={data.current_user} {user_conversations}/>
 <div class="content-wrapper">
     <div class="content">
         {@render children()}
