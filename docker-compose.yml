@@ -13,7 +13,7 @@ services:
       - root
       - rocksdb:/data/libreria.db
     ports:
-      - "8001:8000"
+      - "8002:8000"
     volumes:
       - ./volumes/database:/data
     restart: always
@@ -22,7 +22,7 @@ services:
     image: ollama/ollama
     container_name: libreria-inference
     ports:
-      - "8002:11434"
+      - "8003:11434"
     volumes:
       - ./volumes/inference:/root/.ollama
     restart: always
