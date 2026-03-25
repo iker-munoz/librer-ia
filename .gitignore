@@ -1,8 +1,15 @@
-# Folders
+# Frontend
+## Folders
 .svelte-kit/
 node_modules/
-volumes/
 
-# Files
+## Files
 .npmrc
 package-lock.json
+
+# Backend
+## Folders
+.env/
+
+# General
+volumes/
