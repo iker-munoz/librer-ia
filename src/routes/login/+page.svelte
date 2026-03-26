@@ -7,7 +7,7 @@
 
     let { form }: PageProps = $props();
 </script>
-<form class="form-wrapper" method="POST" action="?/login">
+<form class="form-wrapper" method="POST">
     <div class="section">
         <h1>Log into LibrerIA</h1>
         <p>Your local and fully private AI assistant</p>
