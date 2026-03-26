@@ -4,7 +4,7 @@ import { Role } from "$lib/enums/role";
 import type { Message } from "$lib/schemas/message";
 import type { ChatResponse } from "ollama";
 
-import { INFERENCE } from "./setup";
+import { INFERENCE } from "../setup/inference";
 
 export const generate_conversation_title = async function(first_conversation_message: Message): Promise<string> {
     const guideline_message: Message = { // TODO Improve the guideline templates

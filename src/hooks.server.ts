@@ -1,8 +1,8 @@
 import type { Handle } from "@sveltejs/kit";
 import { building } from "$app/environment";
 
-import { database_setup } from "$lib/server/database/setup";
-import { inference_setup } from "$lib/server/inference/setup";
+import { database_setup } from "$lib/server/setup/database";
+import { inference_setup } from "$lib/server/setup/inference";
 
 import type { User } from "$lib/schemas/user";
 
