@@ -12,6 +12,7 @@ import { generate_conversation_title } from "$lib/server/inference/generation";
 
 import { Role } from "$lib/enums/role";
 import type { Message } from "$lib/schemas/message";
+import { create_message } from "$lib/server/database/messages";
 
 export const load: PageServerLoad = async ({params, locals}) => {
     const current_user: User = locals.user!;
@@ -30,6 +31,8 @@ export const load: PageServerLoad = async ({params, locals}) => {
             last_message_timestamp: current_timestamp
         }
     }
+
+    conversation.messages.sort((a, b) => a.creation_timestamp - b.creation_timestamp)
     return {
         conversation_string: JSON.stringify(conversation),
         conversation_exists
@@ -53,14 +56,15 @@ export const actions = {
             content,
             creation_timestamp: new Date().getTime(),
         }
-        conversation!.messages.push(new_message)
+        conversation.messages.push(new_message)
 
         if (!conversation_exists) {
             const conversation_title: string = await generate_conversation_title(conversation.messages[0]);
             conversation.title = conversation_title;
-            create_conversation(current_user, conversation)
+            await create_conversation(current_user, conversation)
         }
 
+        await create_message(conversation, new_message);
         return { conversation }
 
     }

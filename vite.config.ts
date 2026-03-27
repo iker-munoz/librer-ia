@@ -2,7 +2,7 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { webSocketServer } from 'sveltekit-ws';
 import { defineConfig } from 'vite';
 
-import { connection_handler, disconnection_handler, message_handler } from './src/websocket/handlers';
+import { connection_handler, disconnection_handler, message_handler } from "./src/websocket"
 
 export default defineConfig({
 	plugins: [

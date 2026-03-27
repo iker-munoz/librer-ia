@@ -4,8 +4,9 @@ import { v4 as Uuid } from "uuid";
 import pkg from "js-sha3"
 const { sha3_256 } = pkg;
 
-import { Permission } from "$lib/enums/permission";
-import type { User } from "$lib/schemas/user";
+import { Permission } from "../../enums/permission";
+import type { User } from "../../schemas/user";
+
 import { create_user, read_all_root_users } from "../database/users";
 
 export const DB: Surreal = new Surreal();
