@@ -6,6 +6,7 @@ export type Message = {
     uuid: string,
     role: Role,
     content: string,
+    think?: string,
     creation_timestamp: number
-    generation_speed: number
+    generation_speed?: number
 }

@@ -1,11 +1,15 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import { enhance } from "$app/forms";
-    
+
+    import { v4 as Uuid } from "uuid";
     import { faLightbulb, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
     import { conversations_state } from "$lib/state/conversations.svelte";
 
+    import { Role } from "$lib/enums/role";
     import type { Conversation } from "$lib/schemas/conversation";
+    import type { Message } from "$lib/schemas/message";
 
     import CheckboxInput from "../../../../components/inputs/CheckboxInput.svelte";
     import PrimaryButton from "../../../../components/inputs/PrimaryButton.svelte";
@@ -16,6 +20,30 @@
     let conversation: Conversation | undefined = $state();
     let content: string = $state("");
     let content_input: HTMLTextAreaElement | undefined = $state();
+    let socket: WebSocket | null = null;
+    let is_connected: boolean = false;
+    let is_loading: boolean = $state(false);
+
+    const send_message = ({ formData }: { formData: FormData }) => {
+        formData.append("conversation", JSON.stringify(conversation))
+        if (data.conversation_exists) formData.append("conversation_exists", "on")
+
+        return async () => {
+            const new_message: Message = {
+                uuid: Uuid(),
+                role: Role.USER,
+                content: formData.get("content")?.toString() ?? "",
+                creation_timestamp: new Date().getTime(),
+            }
+
+            content = ""
+            conversation!.messages.push(new_message)
+            if (socket && is_connected) { socket.send(JSON.stringify({
+                messages: conversation!.messages,
+                think: conversations_state.reasoning_active
+            })) }
+        }
+    }
 
     $effect(() => { conversation = JSON.parse(data.conversation_string) })
     $effect(() => {
@@ -24,23 +52,25 @@
         content_input.style.height = "40px";
         content_input.style.height = `${content_input.scrollHeight}px`;
     })
+
+    onMount(() => {
+        socket = new WebSocket(`ws://${window.location.host}/ws`)
+        socket.onopen = () => { is_connected = true }
+        socket.onclose = () => { is_connected = false }
+    })
 </script>
 
 {#if conversation}
-    <div class="conversation-messages"></div>
-    <form class="conversation-form" method="POST" use:enhance={({ formData }) => {
-            console.log(formData)
-            formData.append("conversation", JSON.stringify(conversation))
-            if (data.conversation_exists) formData.append("conversation_exists", "on")
-
-            return async ({ result, update }) => {
-                console.log(result)
-            }
-        }}>
+    <div class="conversation-messages">
+        {#each conversation.messages as message }
+            <p>{message.content}</p>
+        {/each}
+    </div>
+    <form class="conversation-form" method="POST" use:enhance={send_message}>
         <textarea bind:this={content_input} name="content" class="message-input" bind:value={content} placeholder="Ask me anything!"></textarea>
         <div class="message-controls">
             <CheckboxInput is_selected={conversations_state.reasoning_active} icon={faLightbulb} name="reasoning"/>
-            <PrimaryButton icon={faPaperPlane} call={() => {}}/>
+            <PrimaryButton icon={faPaperPlane} disabled={content == '' || is_loading} call={() => {}}/>
         </div>
     </form>
 {/if}

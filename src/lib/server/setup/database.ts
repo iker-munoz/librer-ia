@@ -22,13 +22,13 @@ await DB.connect("ws://localhost:8001", {
 
 export const database_setup = async function() {
     const root_users: User[] = await read_all_root_users();
-    console.log(root_users)
     if (root_users.length == 0) await create_root_user()
 
     console.log("Database setup completed!")
 }
 
 const create_root_user = async function() {
+    console.log("Creating root user...")
     const root_user: User = {
         uuid: Uuid(),
         username: "Root",
@@ -37,4 +37,5 @@ const create_root_user = async function() {
     }
     
     await create_user(root_user);
+    console.log("Root user created!")
 }
