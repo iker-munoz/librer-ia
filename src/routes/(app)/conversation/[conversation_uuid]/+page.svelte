@@ -29,16 +29,17 @@
         formData.append("conversation", JSON.stringify(conversation))
         if (data.conversation_exists) formData.append("conversation_exists", "on");
         content = ""
-   
 
         return async ({ result }: { result: ActionResult }) => {
-            if (result.type != "success") return;
-
-            conversations_state.conversations.push(result.data!.conversation)
+            if (result.type != "success") return
+            if (!data.conversation_exists) {
+                conversations_state.conversations.push(result.data!.conversation)
+                data.conversation_exists = true;
+            }
             conversation = result.data!.conversation;
             if (socket && is_connected) { socket.send(JSON.stringify({
-                messages: conversation!.messages,
-                think: conversations_state.reasoning_active
+                conversation: conversation!,
+                reasoning: conversations_state.reasoning_active
             })) }
         }
     }
@@ -97,7 +98,9 @@
     .conversation-messages {
         width: 100%;
         flex-grow: 1;
-        background-color: red;
+        flex-shrink: 1;
+        overflow-y: scroll;
+        scrollbar-width: none;
     }
 
     .conversation-form {
