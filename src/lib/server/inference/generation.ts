@@ -16,8 +16,7 @@ export const generate_conversation_title = async function(first_conversation_mes
             Try to describe the conversation and avoid repeating the users message, keep it correctly formatted
             like a proper sentence would be.
         `,
-        creation_timestamp: new Date().getTime(),
-        generation_speed: 0
+        creation_timestamp: new Date().getTime()
     }
 
     const response_format = { // TODO Improve the response formats
