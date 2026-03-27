@@ -2,7 +2,23 @@ import type { Conversation } from "$lib/schemas/conversation";
 import type { User } from "$lib/schemas/user";
 import { DB } from "../setup/database";
 
-// export const create_conversation = async function(user: User, conversation: Conversation) {}
+export const create_conversation = async function(user: User, conversation: Conversation) {
+    const query: string = `
+        LET $current_user = ( SELECT * FROM user 
+            WHERE uuid = $user.uuid );
+        LET $new_conversation = INSERT INTO conversation {
+            uuid: $conversation.uuid,
+            title: $conversation.title,
+            is_favorite: $conversation.is_favorite,
+            creation_timestamp: $conversation.creation_timestamp,
+            last_message_timestamp: $conversation.last_message_timestamp
+        };
+        RELATE $current_user -> has -> $new_conversation
+    `
+    const payload = { user, conversation }
+
+    await DB.query(query, payload);
+}
 
 export const read_all_conversations = async function(user: User): Promise<Conversation[]> {
     const query: string = `
@@ -12,7 +28,7 @@ export const read_all_conversations = async function(user: User): Promise<Conver
     const payload = { user }
 
     const [conversations] = await DB.query<[Conversation[]]>(query, payload);
-    return conversations.sort((a, b) => b.last_message_timestamp - a.last_message_timestamp);
+    return conversations;
 }
 
 export const read_conversation = async function(user: User, conversation_uuid: string): Promise<Conversation | undefined> {

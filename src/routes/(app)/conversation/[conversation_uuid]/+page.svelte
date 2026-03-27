@@ -15,6 +15,7 @@
     import PrimaryButton from "../../../../components/inputs/PrimaryButton.svelte";
 
     import type { PageProps } from "./$types";
+    import type { ActionResult } from "@sveltejs/kit";
 
     let { data }: PageProps = $props();
     let conversation: Conversation | undefined = $state();
@@ -26,18 +27,15 @@
 
     const send_message = ({ formData }: { formData: FormData }) => {
         formData.append("conversation", JSON.stringify(conversation))
-        if (data.conversation_exists) formData.append("conversation_exists", "on")
+        if (data.conversation_exists) formData.append("conversation_exists", "on");
+        content = ""
+   
 
-        return async () => {
-            const new_message: Message = {
-                uuid: Uuid(),
-                role: Role.USER,
-                content: formData.get("content")?.toString() ?? "",
-                creation_timestamp: new Date().getTime(),
-            }
+        return async ({ result }: { result: ActionResult }) => {
+            if (result.type != "success") return;
 
-            content = ""
-            conversation!.messages.push(new_message)
+            conversations_state.conversations.push(result.data!.conversation)
+            conversation = result.data!.conversation;
             if (socket && is_connected) { socket.send(JSON.stringify({
                 messages: conversation!.messages,
                 think: conversations_state.reasoning_active
@@ -57,19 +55,39 @@
         socket = new WebSocket(`ws://${window.location.host}/ws`)
         socket.onopen = () => { is_connected = true }
         socket.onclose = () => { is_connected = false }
+
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            is_loading = !data.done
+            let conversation_last_message: Message = conversation!.messages[conversation!.messages.length - 1];
+            if (conversation_last_message.role == Role.USER) {
+                conversation!.messages.push({
+                    uuid: Uuid(),
+                    role: Role.ASSISTANT,
+                    content: data.message.content,
+                    thinking: data.message.thinking,
+                    creation_timestamp: new Date().getTime()
+                })
+                return;
+            }
+
+            if (data.message.content) conversation_last_message.content += data.message.content
+            if (data.message.thinking) conversation_last_message.thinking += data.message.thinking
+            if (data.total_duration) conversation_last_message.generation_speed += data.total_duration
+        }
     })
 </script>
 
 {#if conversation}
     <div class="conversation-messages">
         {#each conversation.messages as message }
-            <p>{message.content}</p>
+            <p>{message.thinking} {message.content}</p>
         {/each}
     </div>
     <form class="conversation-form" method="POST" use:enhance={send_message}>
         <textarea bind:this={content_input} name="content" class="message-input" bind:value={content} placeholder="Ask me anything!"></textarea>
         <div class="message-controls">
-            <CheckboxInput is_selected={conversations_state.reasoning_active} icon={faLightbulb} name="reasoning"/>
+            <CheckboxInput bind:is_selected={conversations_state.reasoning_active} icon={faLightbulb} name="reasoning"/>
             <PrimaryButton icon={faPaperPlane} disabled={content == '' || is_loading} call={() => {}}/>
         </div>
     </form>
