@@ -33,6 +33,7 @@ export const read_all_conversations = async function(user: User): Promise<Conver
 
 export const read_conversation = async function(user: User, conversation_uuid: string): Promise<Conversation | undefined> {
     const query: string = `
+        DEFINE TABLE IF NOT EXISTS conversation;
         ( SELECT *, -> has -> message.* AS messages FROM
             ( SELECT -> has -> conversation.* AS conversations FROM user
             WHERE uuid = $user.uuid )[0].conversations
