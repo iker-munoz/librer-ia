@@ -41,8 +41,7 @@ export const read_conversation = async function(user: User, conversation_uuid: s
     `
     const payload = { user, conversation_uuid }
 
-    const [conversation] = await DB.query<[Conversation]>(query, payload);
-    console.log(conversation)
+    const [_, conversation] = await DB.query<[undefined, Conversation]>(query, payload);
     return conversation;
 }
 
