@@ -16,6 +16,7 @@ export const actions = {
         if (!username) return fail(400, { username, username_error: "Please input your username!" })
         if (!password) return fail(400, { username, password_error: "Please input your password" })
         
+        console.log(sha3_256(password))
         const user: User | undefined = await read_user_with_credentials(username, sha3_256(password));
          
         if (!user) return fail(400, { username, validation_error: "Invalid credentials" })
