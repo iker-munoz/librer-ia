@@ -21,7 +21,7 @@ export const read_all_root_users = async function(): Promise<User[]> {
         DEFINE TABLE IF NOT EXISTS user;
         SELECT * FROM user WHERE permissions = "Root";
     `
-    const [users] = await DB.query<[User[]]>(query)
+    const [_, users] = await DB.query<[undefined, User[]]>(query)
     return users
 }
 
@@ -33,7 +33,7 @@ export const read_user_with_credentials = async function(username: string, passw
         SELECT * FROM user WHERE username = $username AND password_hash = $password_hash;
     `
     const payload = { username, password_hash }
-    const [users] = await DB.query<[User[]]>(query, payload)
+    const [_, users] = await DB.query<[undefined, User[]]>(query, payload)
     return users[0]
 }
 
