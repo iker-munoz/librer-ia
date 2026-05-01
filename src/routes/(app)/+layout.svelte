@@ -25,14 +25,14 @@
         padding: 0px;
         margin: 0px;
         background-color: #101010;
-        color: #F0F0F0;
+        color: #f0f0f0;
     }
 
     :global(body) {
         display: flex;
     }
 
-    :global(h1) {
+    :global(h1, h2, h3, h4, h5, h6) {
         margin: 0px;
         font-size: 24px;
         font-weight: 600;
@@ -49,6 +49,38 @@
         background-color: #202020;
         border: 0px;
         margin: 0px;
+    }
+
+    :global(ul, ol) {
+        margin: 0px;
+        font-size: 16px;
+    }
+
+    :global(pre) {
+        padding: 20px;
+        box-sizing: border-box;
+        border: 1px solid #202020;
+        border-radius: 10px;
+    }
+
+    :global(code) {
+        padding: 0px !important;
+        background-color: transparent !important;
+    }
+
+    :global(table, th, tr, td) {
+        border: 1px solid #202020;
+        border-collapse: collapse;
+        text-align: start;
+        padding: 5px;
+    }
+
+    :global(a) {
+        color: #80FF80;
+    }
+
+    :global(a:visited) {
+        color: #508050;
     }
 
     .content-wrapper {
