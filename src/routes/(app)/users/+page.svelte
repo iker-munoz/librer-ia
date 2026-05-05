@@ -1,32 +1,28 @@
 <script lang="ts">
-  let users = $state(["Manolo", "Ana García", "Pedro López"]);
+  import { enhance } from "$app/forms";
+  import type { User } from "$lib/schemas/user";
+
+  let { data, form }: { data: any, form: any } = $props();
+  
   let search = $state("");
   let showDropdown = $state(false);
-
+  let showModalState = $state(false);
+  
   let filtered = $derived(
-    users.filter((u) => u.toLowerCase().includes(search.toLowerCase())),
+    (data.users || []).filter((u: User) => u.username.toLowerCase().includes(search.toLowerCase())),
   );
 
-  function selectUser(user: string) {
-    search = user;
+  function selectUser(user: User) {
+    search = user.username;
     showDropdown = false;
   }
+  
   function showModal() {
-    const modal = document.querySelector(".overlay") as HTMLElement;
-    modal.style.display = "flex";
+    showModalState = true;
   }
 
   function cerrarModal() {
-    const overlay = document.querySelector(".overlay") as HTMLElement;
-    overlay.style.display = "none";
-  }
-  let newUsername = $state("");
-  function addUser() {
-    /*Si el username es vacio o tiene solo espacios no retorna nada*/
-    if (newUsername.trim() === "") return;
-    users.push(newUsername);
-    newUsername = "";
-    cerrarModal();
+    showModalState = false;
   }
 </script>
 
@@ -38,52 +34,80 @@
         class="users-input"
         type="text"
         placeholder="Search users..."
-        /*Enlaza el input con la variable del script*/
         bind:value={search}
-        /*Se abre el dropdown al hacer clic*/
         onfocus={() => (showDropdown = true)}
-        /*Cierra del dropdown al salir*/
         onblur={() => setTimeout(() => (showDropdown = false), 150)}
       />
-      <!--Se muestra el dropdown solo si es true  y hay usuarios filtrados-->
       {#if showDropdown && filtered.length > 0}
         <ul class="dropdown">
-          <!--Se recorre el array de users -->
           {#each filtered as user}
             <li class="users-list">
-              <span onmousedown={() => selectUser(user)}>{user}</span>
-              <button class="btn-delete">x</button>
+              <span 
+                role="button" 
+                tabindex="0" 
+                onmousedown={() => selectUser(user)}
+                onkeydown={(e) => { if (e.key === 'Enter') selectUser(user) }}
+              >{user.username}</span>
+              <form method="POST" action="?/delete" use:enhance>
+                <input type="hidden" name="uuid" value={user.uuid} />
+                <button type="submit" class="btn-delete">x</button>
+              </form>
             </li>
           {/each}
         </ul>
       {/if}
       <button class="add-user-button" onclick={showModal}>+</button>
     </div>
-    <div class="overlay">
-      <div class="modal">
-        <div class="modal-header">
-          <p style="font-weight: bold;">Add new user</p>
-          <p>Enter the details for the new user</p>
+    
+    {#if form?.error}
+      <p style="color: #ff6b6b; font-size: 14px;">{form.error}</p>
+    {/if}
+    {#if form?.success}
+      <p style="color: #51cf66; font-size: 14px;">Action completed successfully!</p>
+    {/if}
 
-          <div class="modal-form">
-            <label for="username">Username</label>
-            <input
-              class="users-input"
-              type="text"
-              placeholder="e.g Ana Garcia"
-              bind:value={newUsername}
-            />
-            <label for="password">Password</label>
-            <input class="users-input" type="password" />
+    {#if showModalState}
+      <div class="overlay">
+        <div class="modal">
+          <div class="modal-header">
+            <p style="font-weight: bold;">Add new user</p>
+            <p>Enter the details for the new user</p>
+
+            <form method="POST" action="?/create" use:enhance={() => {
+              return async ({ update }) => {
+                await update();
+                cerrarModal();
+              };
+            }}>
+              <div class="modal-form">
+                <label for="username">Username</label>
+                <input
+                  id="username"
+                  name="username"
+                  class="users-input"
+                  type="text"
+                  placeholder="e.g Ana Garcia"
+                  required
+                />
+                <label for="password">Password</label>
+                <input 
+                  id="password"
+                  name="password"
+                  class="users-input" 
+                  type="password" 
+                  required
+                />
+              </div>
+
+              <div class="modal-btn" style="margin-top: 15px;">
+                <button type="button" class="btn" onclick={cerrarModal}>Cancel</button>
+                <button type="submit" class="btn">Add User</button>
+              </div>
+            </form>
           </div>
         </div>
-
-        <div class="modal-btn">
-          <button class="btn" onclick={cerrarModal}>Cancel</button>
-          <button class="btn" onclick={addUser}>Add User</button>
-        </div>
       </div>
-    </div>
+    {/if}
   </div>
 </div>
 
@@ -169,7 +193,7 @@
   }
 
   .btn-delete:hover {
-    color: #f0f0f0;
+    color: #ff6b6b;
     background: #2a2a2a;
   }
 
@@ -181,7 +205,7 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
     z-index: 100;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
   }
