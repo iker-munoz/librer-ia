@@ -20,6 +20,14 @@ class ConversationsState {
         if (!conversation_to_favorite) return
         conversation_to_favorite.is_favorite = favorite_state;
     }
+
+    remove = (conversation_uuid: string) => {
+        let conversation_to_delete_index: number = this.conversations.findIndex(conversation => {
+            return conversation.uuid == conversation_uuid
+        })
+        if (conversation_to_delete_index == -1) return
+        this.conversations.splice(conversation_to_delete_index, 1);
+    }
 }
 
 export const conversations_state: ConversationsState = new ConversationsState();

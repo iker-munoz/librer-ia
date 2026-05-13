@@ -16,13 +16,12 @@
 
     const favorite_conversation = ({ formData }: { formData: FormData }) => {
         formData.append("conversation", JSON.stringify(conversation));
-        return async () => {
-            conversations_state.set_favorite(conversation.uuid, !conversation.is_favorite);
-        }
+        return async () => { conversations_state.set_favorite(conversation.uuid, !conversation.is_favorite) }
     }
 
-    const delete_conversation = ({}) => {
-        return async () => {}
+    const delete_conversation = ({ formData}: { formData: FormData }) => {
+        formData.append("conversation", JSON.stringify(conversation));
+        return async () => { conversations_state.remove(conversation.uuid) }
     }
 </script>
 
