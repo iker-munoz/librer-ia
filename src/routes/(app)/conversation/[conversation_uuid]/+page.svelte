@@ -13,7 +13,7 @@
 
     import CheckboxInput from "../../../../components/inputs/CheckboxInput.svelte";
     import PrimaryButton from "../../../../components/inputs/PrimaryButton.svelte";
-    import ConversationMessage from "../../../../components/ConversationMessage.svelte";
+    import ConversationMessage from "../../../../components/conversations/ConversationMessage.svelte";
 
     import type { PageProps } from "./$types";
     import type { ActionResult } from "@sveltejs/kit";

@@ -41,10 +41,20 @@ export const read_conversation = async function(user: User, conversation_uuid: s
     const payload = { user, conversation_uuid }
 
     const [conversation] = await DB.query<[Conversation]>(query, payload);
-    console.log(conversation)
     return conversation;
 }
 
-// export const update_conversation = async function(user: User, conversation: Conversation) {}
+export const favorite_conversation = async function(user: User, conversation_uuid: string, favorite_state: boolean) {
+    const query: string = `
+        LET $conversation = ( SELECT *, -> has -> message.* AS messages FROM
+            ( SELECT -> has -> conversation.* AS conversations FROM user
+            WHERE uuid = $user.uuid )[0].conversations
+        WHERE uuid = $conversation_uuid )[0];
+        UPDATE $conversation SET
+            is_favorite = $favorite_state;
+    `
+    const payload = { user, conversation_uuid, favorite_state }
+    await DB.query(query, payload);
+}
 
 // export const delete_conversation = async function(user: User, conversation_uuid: string) {}

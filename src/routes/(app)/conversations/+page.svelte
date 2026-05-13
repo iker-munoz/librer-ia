@@ -3,6 +3,7 @@
     import TextInput from "../../../components/inputs/TextInput.svelte";
     import type { Conversation } from "$lib/schemas/conversation";
     import { conversations_state } from "$lib/state/conversations.svelte";
+    import ConversationButton from "../../../components/conversations/ConversationButton.svelte";
 
     let search_input: string = $state("");
     let filtered_conversations: Conversation[] = $derived(conversations_state.conversations.filter(
@@ -17,7 +18,7 @@
     </div>
     <div class="elements">
         {#each filtered_conversations as conversation}
-            <p>{conversation.title}</p>
+            <ConversationButton {conversation}/>
         {/each}
     </div>
 </div>
