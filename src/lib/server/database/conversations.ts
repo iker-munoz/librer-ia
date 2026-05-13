@@ -57,4 +57,15 @@ export const favorite_conversation = async function(user: User, conversation_uui
     await DB.query(query, payload);
 }
 
-// export const delete_conversation = async function(user: User, conversation_uuid: string) {}
+export const delete_conversation = async function(user: User, conversation_uuid: string) {
+    const query: string = `
+        LET $conversation = ( SELECT *, -> has -> message.* AS messages FROM
+            ( SELECT -> has -> conversation.* AS conversations FROM user
+            WHERE uuid = $user.uuid )[0].conversations
+        WHERE uuid = $conversation_uuid )[0];
+        DELETE $conversation -> has -> message, $conversation;
+    `
+    const payload = { user, conversation_uuid}
+    await DB.query(query, payload);
+}
+
