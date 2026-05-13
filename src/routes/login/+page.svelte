@@ -4,10 +4,14 @@
     import TextInput from "../../components/inputs/TextInput.svelte";
     import PasswordInput from "../../components/inputs/PasswordInput.svelte";
     import PrimaryButton from "../../components/inputs/PrimaryButton.svelte";
+    import { enhance } from "$app/forms";
+    import { goto } from "$app/navigation";
 
     let { form }: PageProps = $props();
 </script>
-<form class="form-wrapper" method="POST">
+<form class="form-wrapper" method="POST" use:enhance={() => {
+        return async () => { goto("/new_conversation") }
+    }}>
     <div class="section">
         <h1>Log into LibrerIA</h1>
         <p>Your local and fully private AI assistant</p>
