@@ -28,10 +28,7 @@ export const read_all_root_users = async function(): Promise<User[]> {
 // export const read_user = async function(user_uuid: string): Promise<User> {}
 
 export const read_user_with_credentials = async function(username: string, password_hash: string): Promise<User | undefined> {
-    const query: string = `
-        DEFINE TABLE IF NOT EXISTS user;
-        SELECT * FROM user WHERE username = $username AND password_hash = $password_hash;
-    `
+    const query: string = `SELECT * FROM user WHERE username = $username AND password_hash = $password_hash`
     const payload = { username, password_hash }
     const [_, users] = await DB.query<[undefined, User[]]>(query, payload)
     return users[0]

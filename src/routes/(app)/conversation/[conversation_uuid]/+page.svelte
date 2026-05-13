@@ -13,6 +13,7 @@
 
     import CheckboxInput from "../../../../components/inputs/CheckboxInput.svelte";
     import PrimaryButton from "../../../../components/inputs/PrimaryButton.svelte";
+    import ConversationMessage from "../../../../components/conversations/ConversationMessage.svelte";
 
     import type { PageProps } from "./$types";
     import type { ActionResult } from "@sveltejs/kit";
@@ -82,7 +83,7 @@
 {#if conversation}
     <div class="conversation-messages">
         {#each conversation.messages as message }
-            <p>{message.thinking} {message.content}</p>
+            <ConversationMessage {message}/>
         {/each}
     </div>
     <form class="conversation-form" method="POST" use:enhance={send_message}>
@@ -97,6 +98,10 @@
 <style>
     .conversation-messages {
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+        gap: 20px;
         flex-grow: 1;
         flex-shrink: 1;
         overflow-y: scroll;
