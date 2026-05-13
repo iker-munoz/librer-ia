@@ -9,8 +9,24 @@ class ConversationsState {
     recent_conversations: Conversation[] = $derived(this.sorted_conversations.slice(0, 10));
     reasoning_active: boolean = $state(false);
 
-    load_conversations = async (user_conversations: Conversation[]) => {
+    load_conversations = (user_conversations: Conversation[]) => {
         this.conversations = user_conversations;
+    }
+
+    set_favorite = (conversation_uuid: string, favorite_state: boolean) => {
+        let conversation_to_favorite = this.conversations.find(conversation => {
+            return conversation.uuid == conversation_uuid
+        })
+        if (!conversation_to_favorite) return
+        conversation_to_favorite.is_favorite = favorite_state;
+    }
+
+    remove = (conversation_uuid: string) => {
+        let conversation_to_delete_index: number = this.conversations.findIndex(conversation => {
+            return conversation.uuid == conversation_uuid
+        })
+        if (conversation_to_delete_index == -1) return
+        this.conversations.splice(conversation_to_delete_index, 1);
     }
 }
 
