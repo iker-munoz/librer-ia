@@ -8,7 +8,7 @@ import type { User } from "$lib/schemas/user";
 import { read_user_with_credentials } from "$lib/server/database/users";
 
 export const actions = {
-    default: async ({ request, cookies }: { request: Request, cookies: Cookies }) => {
+    login: async ({ request, cookies }: { request: Request, cookies: Cookies }) => {
         const data: FormData = await request.formData();
         const username: string | undefined = data.get("username")?.toString();
         const password: string | undefined = data.get("password")?.toString();
@@ -23,5 +23,9 @@ export const actions = {
             path: "/",
             maxAge: (60 * 60 * 24 * 7) // One week of valid session
         })
+    },
+    logout: async ({ cookies }: { cookies: Cookies }) => {
+        console.log(";alksdf;alksdf;alskdjfas;lkdfasd;lkj")
+        cookies.delete("current_user", { path: "/" })
     }
 }

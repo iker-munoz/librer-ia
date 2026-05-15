@@ -3,6 +3,7 @@
     import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
     import SecondaryButton from "../inputs/SecondaryButton.svelte";
     import { goto } from "$app/navigation";
+    import { enhance } from "$app/forms";
 
     let { current_user }: { current_user: User } = $props();
 </script>
@@ -12,7 +13,9 @@
         <p class="username">{current_user.username}</p>
         <p class="permissions">{current_user.permissions}</p>
     </div>
-    <SecondaryButton icon={faArrowRightFromBracket} call={() => goto("/login")}/>
+    <form action="/login?/logout" method="POST" use:enhance={() => {return async () => {goto("/login")}}}>
+        <SecondaryButton icon={faArrowRightFromBracket} call={() => {}}/>
+    </form>
 </div>
 
 <style>
