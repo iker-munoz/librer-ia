@@ -16,14 +16,14 @@ export const inference_setup = async function() {
         // TODO add embedder template
     ]
 
-    models_to_download.forEach(async (model_template) => {
+    for (const model_template of models_to_download) {
         if (model_names.includes(`${model_template.model}:latest`)) {
             console.log(`Model ${model_template.model} already downloaded, skipping...`);
             return;
         }
         console.log(`Model ${model_template.model} not found, downloading... This might take a minute`);
         await create_model(model_template.model, model_template.from);
-    })
+    };
 
     await load_model_on_memory("librer-ia")
     console.log("Inference setup completed!")

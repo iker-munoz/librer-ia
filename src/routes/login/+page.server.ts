@@ -1,4 +1,4 @@
-import { fail, redirect } from "@sveltejs/kit";
+import { fail } from "@sveltejs/kit";
 import type{ Cookies } from "@sveltejs/kit";
 
 import pkg from "js-sha3";
@@ -16,7 +16,6 @@ export const actions = {
         if (!username) return fail(400, { username, username_error: "Please input your username!" })
         if (!password) return fail(400, { username, password_error: "Please input your password" })
         
-        console.log(sha3_256(password))
         const user: User | undefined = await read_user_with_credentials(username, sha3_256(password));
          
         if (!user) return fail(400, { username, validation_error: "Invalid credentials" })
@@ -24,6 +23,5 @@ export const actions = {
             path: "/",
             maxAge: (60 * 60 * 24 * 7) // One week of valid session
         })
-        redirect(303, "/new_conversation")
     }
 }
