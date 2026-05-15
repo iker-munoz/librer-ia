@@ -1,6 +1,4 @@
 <script lang="ts">
-    import type { PageProps } from "./$types";
-
     import TextInput from "../../components/inputs/TextInput.svelte";
     import PasswordInput from "../../components/inputs/PasswordInput.svelte";
     import PrimaryButton from "../../components/inputs/PrimaryButton.svelte";
@@ -8,7 +6,6 @@
     import { goto } from "$app/navigation";
     import type { ActionResult } from "@sveltejs/kit";
 
-    let { form }: PageProps = $props();
     let username: string = $state("");
     let username_error: string = $state("");
     let password_error: string = $state("");
@@ -30,7 +27,7 @@
         }
     }
 </script>
-<form class="form-wrapper" method="POST" use:enhance={login}>
+<form class="form-wrapper" action="?/login" method="POST" use:enhance={login}>
     <div class="section">
         <h1>Log into LibrerIA</h1>
         <p>Your local and fully private AI assistant</p>
@@ -41,7 +38,7 @@
     </div>
     <div class="section">
         <PrimaryButton label="Log in" call={() => {}}/>
-        {#if form?.validation_error}
+        {#if validation_error}
             <p class="error-message">{validation_error}</p>
         {/if}
     </div>
