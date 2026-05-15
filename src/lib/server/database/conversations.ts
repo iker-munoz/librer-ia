@@ -28,6 +28,7 @@ export const read_all_conversations = async function(user: User): Promise<Conver
     const payload = { user }
 
     const [conversations] = await DB.query<[Conversation[]]>(query, payload);
+    if (!conversations) return []
     return conversations;
 }
 

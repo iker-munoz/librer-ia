@@ -6,24 +6,43 @@
     import PrimaryButton from "../../components/inputs/PrimaryButton.svelte";
     import { enhance } from "$app/forms";
     import { goto } from "$app/navigation";
+    import type { ActionResult } from "@sveltejs/kit";
 
     let { form }: PageProps = $props();
+    let username: string = $state("");
+    let username_error: string = $state("");
+    let password_error: string = $state("");
+    let validation_error: string = $state("");
+
+    const login = () => {
+        return async ({ result }: { result: ActionResult }) => {
+            console.log(result);
+            if (result.type == "success") {
+                goto("/new_conversation");
+                return
+            }
+
+            if (result.type != "failure") return
+            username = result.data?.username ?? "";
+            username_error = result.data?.username_error ?? "";
+            password_error = result.data?.password_error ?? "";
+            validation_error = result.data?.validation_error ?? "";
+        }
+    }
 </script>
-<form class="form-wrapper" method="POST" use:enhance={() => {
-        return async () => { goto("/new_conversation") }
-    }}>
+<form class="form-wrapper" method="POST" use:enhance={login}>
     <div class="section">
         <h1>Log into LibrerIA</h1>
         <p>Your local and fully private AI assistant</p>
     </div>
     <div class="section">
-        <TextInput value={form?.username ?? ''} placeholder="Username" error={form?.username_error}/>
-        <PasswordInput value="" placeholder="Password" error={form?.password_error}/>
+        <TextInput value={username} placeholder="Username" error={username_error}/>
+        <PasswordInput value="" placeholder="Password" error={password_error}/>
     </div>
     <div class="section">
         <PrimaryButton label="Log in" call={() => {}}/>
         {#if form?.validation_error}
-            <p class="error-message">{form?.validation_error}</p>
+            <p class="error-message">{validation_error}</p>
         {/if}
     </div>
 </form>
