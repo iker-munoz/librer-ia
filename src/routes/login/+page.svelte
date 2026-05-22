@@ -27,6 +27,11 @@
         }
     }
 </script>
+
+<svelte:head>
+    <title>LibrerIA - Login</title>
+</svelte:head>
+
 <form class="form-wrapper" action="?/login" method="POST" use:enhance={login}>
     <div class="section">
         <h1>Log into LibrerIA</h1>

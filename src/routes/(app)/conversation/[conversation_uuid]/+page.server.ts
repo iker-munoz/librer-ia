@@ -17,6 +17,7 @@ import { create_message } from "$lib/server/database/messages";
 export const load: PageServerLoad = async ({params, locals}) => {
     const current_user: User = locals.user!;
     let conversation: Conversation | undefined = await read_conversation(current_user, params.conversation_uuid);
+    console.log(conversation);
     let conversation_exists: boolean = true;
     if (!conversation) {
         const current_timestamp: number = new Date().getTime();
